@@ -43,7 +43,7 @@ if {$force_conservative} {
 
 
 set timeout -1
-spawn bash /pkg/petalinux-v2014.4-final-installer.run /pkg
+spawn bash /wzxc/petalinux-v2014.4-final-installer.run /wzxc
 match_max 100000
 expect "Press Enter to display the license agreements"
 send -- "\r"

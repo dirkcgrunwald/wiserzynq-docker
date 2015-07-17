@@ -1,7 +1,7 @@
 FROM wiserzynq-base
 MAINTAINER grunwald@cs.colorado.edu
 
-WORKDIR /pkg/
+WORKDIR /wzxc/
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -15,7 +15,9 @@ RUN apt-get update \
     zlib1g-dev \
     flex \
     bison \
-    expect
+    expect \
+    runit
+
 
 COPY imagefiles/xinetd.tftpd /etc/xinetd.d/tftpd
 RUN mkdir -p /tftpboot ; \
@@ -24,8 +26,27 @@ RUN mkdir -p /tftpboot ; \
     service xinetd restart
 EXPOSE 69/udp
 
-ADD Avnet-Digilent-ZedBoard-v2014.4-final.bsp \
-    petalinux-v2014.4-final-installer.run imagefiles/script.exp /pkg/
+ENV HOST=arm-xilinx-linux-gnueabi \
+    TOOLCHAIN=petalinux-v2014.4-final/tools/linux-i386/arm-xilinx-linux-gnueabi
+
+# I'd put all these into the same ENV command, but you cannot define and use
+# a var in the same command.
+ENV ARCH=arm \
+    TOOLCHAIN_ROOT=/wzxc/$TOOLCHAIN \
+    CROSS_COMPILE=/wzxc/$TOOLCHAIN/bin/$HOST-
+ENV AS=${CROSS_COMPILE}as \
+    AR=${CROSS_COMPILE}ar \
+    CC=${CROSS_COMPILE}gcc \
+    CPP=${CROSS_COMPILE}cpp \
+    CXX=${CROSS_COMPILE}g++ \
+    LD=${CROSS_COMPILE}ld
+
+ADD Avnet-Digilent-ZedBoard-v2014.4-final.bsp /wzxc/
+COPY petalinux-v2014.4-final-installer.run \
+    imagefiles/script.exp \
+    imagefiles/entrypoint.sh \
+    imagefiles/wzxc \
+    /wzxc/
 
 ## The Xilinx peta-linux tools require /bin/bash rather than /bin/dash
 ## or some of the scripts fail. This is lame but reality.
@@ -36,9 +57,12 @@ RUN rm /bin/sh ; ln -s /bin/bash /bin/sh
 ## Need to insure that a valid TERM is set or the license display objects
 ##
 RUN export TERM=vt100; \
-    expect /pkg/script.exp ; \
-    rm /pkg/petalinux-v2014.4-final-installer.run ; \
-    rm /pkg/petalinux_installation_log ; \
-    . /pkg/petalinux-v2014.4-final/settings.sh ; \
+    expect /wzxc/script.exp ; \
+    rm /wzxc/petalinux-v2014.4-final-installer.run ; \
+    rm /wzxc/petalinux_installation_log ; \
+    . /wzxc/petalinux-v2014.4-final/settings.sh ; \
     echo $PETALINUX ; \
     petalinux-util --webtalk off 
+
+WORKDIR /build
+ENTRYPOINT ["/wzxc/entrypoint.sh"]

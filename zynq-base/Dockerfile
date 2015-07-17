@@ -4,7 +4,7 @@ MAINTAINER grunwald@cs.colorado.edu
 RUN apt-get update && apt-get install -y \
     curl \
     wget \
-    make \
+    make cmake runit \
     automake \
     gcc \
     gcc-multilib \
