@@ -12,7 +12,7 @@ RUN apt-get update \
     net-tools \
     ncurses-dev \
     tftp tftpd \
-    zlib1g-dev \
+    libssl-dev zlib1g-dev \
     flex \
     bison \
     expect \
@@ -27,7 +27,7 @@ RUN mkdir -p /tftpboot ; \
 EXPOSE 69/udp
 
 ENV HOST=arm-xilinx-linux-gnueabi \
-    TOOLCHAIN=petalinux-v2014.4-final/tools/linux-i386/arm-xilinx-linux-gnueabi
+    TOOLCHAIN=petalinux-v2015.2-final/tools/linux-i386/arm-xilinx-linux-gnueabi
 
 # I'd put all these into the same ENV command, but you cannot define and use
 # a var in the same command.
@@ -41,9 +41,9 @@ ENV AS=${CROSS_COMPILE}as \
     CXX=${CROSS_COMPILE}g++ \
     LD=${CROSS_COMPILE}ld
 
-ADD Avnet-Digilent-ZedBoard-v2014.4-final.bsp /wzxc/
-COPY petalinux-v2014.4-final-installer.run \
-    imagefiles/script.exp \
+# ADD Avnet-Digilent-ZedBoard-v2015.2-final.bsp /wzxc/
+COPY petalinux-v2015.2-final-installer.run \
+    imagefiles/accept-15.2.exp \
     imagefiles/entrypoint.sh \
     imagefiles/wzxc \
     /wzxc/
@@ -57,10 +57,10 @@ RUN rm /bin/sh ; ln -s /bin/bash /bin/sh
 ## Need to insure that a valid TERM is set or the license display objects
 ##
 RUN export TERM=vt100; \
-    expect /wzxc/script.exp ; \
-    rm /wzxc/petalinux-v2014.4-final-installer.run ; \
+    expect /wzxc/accept-15.2.exp ; \
+    rm /wzxc/petalinux-v2015.2-final-installer.run ; \
     rm /wzxc/petalinux_installation_log ; \
-    . /wzxc/petalinux-v2014.4-final/settings.sh ; \
+    . /wzxc/petalinux-v2015.2-final/settings.sh ; \
     echo $PETALINUX ; \
     petalinux-util --webtalk off 
 
