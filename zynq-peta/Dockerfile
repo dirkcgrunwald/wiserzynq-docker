@@ -16,7 +16,8 @@ RUN apt-get update \
     flex \
     bison \
     expect \
-    runit
+    runit \
+    bc
 
 
 COPY imagefiles/xinetd.tftpd /etc/xinetd.d/tftpd
@@ -41,6 +42,7 @@ ENV AS=${CROSS_COMPILE}as \
     CXX=${CROSS_COMPILE}g++ \
     LD=${CROSS_COMPILE}ld
 
+
 # ADD Avnet-Digilent-ZedBoard-v2015.2-final.bsp /wzxc/
 COPY petalinux-v2015.2-final-installer.run \
     imagefiles/accept-15.2.exp \
@@ -62,7 +64,18 @@ RUN export TERM=vt100; \
     rm /wzxc/petalinux_installation_log ; \
     . /wzxc/petalinux-v2015.2-final/settings.sh ; \
     echo $PETALINUX ; \
-    petalinux-util --webtalk off 
+    petalinux-util --webtalk off
+
+##
+## Build the kernel - this uses -j which works if you have 32gb of ram
+##
+
+ENV  PATH="/wzxc/petalinux-v2015.2-final/tools/linux-i386/petalinux/bin/unexport:/wzxc/petalinux-v2015.2-final/components/u-boot/u-boot-plnx/tools":$PATH
+RUN cd /wzxc/petalinux-v2015.2-final/components/linux-kernel/xlnx-3.19 ;\
+    make xilinx_zynq_defconfig ; \
+    cp -p .config /build/KERNEL-CONFIG ; \
+    make -j UIMAGE_LOADADDR=0x8000 uImage 
+
 
 WORKDIR /build
 ENTRYPOINT ["/wzxc/entrypoint.sh"]
