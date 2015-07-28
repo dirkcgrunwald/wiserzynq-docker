@@ -12,19 +12,21 @@ RUN apt-get update \
     net-tools \
     ncurses-dev \
     tftp tftpd \
-    libssl-dev zlib1g-dev \
+    libssl-dev zlib1g-dev lib32z1 unzip \
     flex \
     bison \
     expect \
     runit \
-    bc
+    bc \
+    emacs24-nox
 
 
 COPY imagefiles/xinetd.tftpd /etc/xinetd.d/tftpd
 RUN mkdir -p /tftpboot ; \
     chmod -R 777 /tftpboot ; \
-    chown -R nobody /tftpboot ; \
-    service xinetd restart
+    chown -R nobody:nogroup /tftpboot ; \
+    ln -s /etc/init.d/xinetd /etc/rc5.d/S40xinetd ; \
+    /etc/init.d/xinetd restart ;
 EXPOSE 69/udp
 
 ENV HOST=arm-xilinx-linux-gnueabi \
@@ -43,7 +45,7 @@ ENV AS=${CROSS_COMPILE}as \
     LD=${CROSS_COMPILE}ld
 
 
-# ADD Avnet-Digilent-ZedBoard-v2015.2-final.bsp /wzxc/
+ADD Avnet-Digilent-ZedBoard-v2015.2-final.bsp /built/
 COPY petalinux-v2015.2-final-installer.run \
     imagefiles/accept-15.2.exp \
     imagefiles/entrypoint.sh \
@@ -64,18 +66,9 @@ RUN export TERM=vt100; \
     rm /wzxc/petalinux_installation_log ; \
     . /wzxc/petalinux-v2015.2-final/settings.sh ; \
     echo $PETALINUX ; \
-    petalinux-util --webtalk off
-
-##
-## Build the kernel - this uses -j which works if you have 32gb of ram
-##
-
-ENV  PATH="/wzxc/petalinux-v2015.2-final/tools/linux-i386/petalinux/bin/unexport:/wzxc/petalinux-v2015.2-final/components/u-boot/u-boot-plnx/tools":$PATH
-RUN cd /wzxc/petalinux-v2015.2-final/components/linux-kernel/xlnx-3.19 ;\
-    make xilinx_zynq_defconfig ; \
-    cp -p .config /build/KERNEL-CONFIG ; \
-    make -j UIMAGE_LOADADDR=0x8000 uImage 
-
+    petalinux-util --webtalk off ; \
+    cd /built/Avnet-Digilent-ZedBoard-2015.2 ; \
+    petalinux-build
 
 WORKDIR /build
 ENTRYPOINT ["/wzxc/entrypoint.sh"]

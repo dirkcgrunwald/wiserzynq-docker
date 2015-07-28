@@ -14,6 +14,12 @@ fi
 # created are owned by that user. Without this they are all owned by root.
 # If we are running from boot2docker, this is not necessary.
 # The wzxc script sets the BUILDER_UID and BUILDER_GID vars.
+
+/etc/init.d/xinetd start
+PETALINUX="/wzxc/petalinux-v2015.2-final"
+export PETALINUX="/wzxc/petalinux-v2015.2-final"
+source /wzxc/petalinux-v2015.2-final/settings.sh
+
 if [[ -n $BUILDER_UID ]] && [[ -n $BUILDER_GID ]]; then
 
     BUILDER_USER=wzxc-user
@@ -21,6 +27,7 @@ if [[ -n $BUILDER_UID ]] && [[ -n $BUILDER_GID ]]; then
 
     groupadd -o -g $BUILDER_GID $BUILDER_GROUP 2> /dev/null
     useradd -o -g $BUILDER_GID -u $BUILDER_UID $BUILDER_USER 2> /dev/null
+    echo "$BUILDER_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$BUILDER_USER
 
     # Run the command as the specified user/group.
     exec chpst -u :$BUILDER_UID:$BUILDER_GID "$@"
