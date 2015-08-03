@@ -1,0 +1,32 @@
+#! /bin/sh -e
+
+### BEGIN INIT INFO
+# Provides:          xilinx-lmgr
+# Required-Start:    
+# Required-Stop:     mountall.sh
+# Default-Start:     
+# Default-Stop:      0 1 6
+# Short-Description: Starts Xilinx LMGR as docker
+# Description:       Starts Xilinx LMGR as docker
+### END INIT INFO
+
+PATH="/sbin:/bin:/usr/sbin:/usr/bin"
+. /lib/lsb/init-functions
+
+case "$1" in
+	start)
+	    /usr/bin/docker run --name=xilinx-lmgr --net=host -d -t wiserzynq-lm
+		;;
+        stop)
+	    /usr/bin/docker kill xilinx-lmgr
+	        ;;
+	restart|force-reload)
+	    /usr/bin/docker kill xilinx-lmgr
+	    /usr/bin/docker run --name=xilinx-lmgr --net=host -d -t wiserzynq-lm
+		;;
+	*)
+		echo "Usage: $0 {start|restart|force-reload|stop}"
+		exit 1
+	;;
+esac
+exit 0

@@ -30,7 +30,8 @@ RUN mkdir -p /tftpboot ; \
 EXPOSE 69/udp
 
 ENV HOST=arm-xilinx-linux-gnueabi \
-    TOOLCHAIN=petalinux-v2015.2-final/tools/linux-i386/arm-xilinx-linux-gnueabi
+    TOOLCHAIN=petalinux-v2015.2-final/tools/linux-i386/arm-xilinx-linux-gnueabi \
+    PETALINUX=/wzxc/petalinux-v2015.2-final/
 
 # I'd put all these into the same ENV command, but you cannot define and use
 # a var in the same command.

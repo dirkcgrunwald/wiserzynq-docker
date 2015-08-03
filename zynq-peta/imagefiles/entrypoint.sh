@@ -16,8 +16,7 @@ fi
 # The wzxc script sets the BUILDER_UID and BUILDER_GID vars.
 
 /etc/init.d/xinetd start
-PETALINUX="/wzxc/petalinux-v2015.2-final"
-export PETALINUX="/wzxc/petalinux-v2015.2-final"
+
 source /wzxc/petalinux-v2015.2-final/settings.sh
 
 if [[ -n $BUILDER_UID ]] && [[ -n $BUILDER_GID ]]; then
