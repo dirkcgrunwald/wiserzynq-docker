@@ -16,6 +16,9 @@ When building the container,  need to retrieve a copy of
 and your license file named
     Xilinx.lic
 
-	
+To check status of licenses (on the server host or another),
+you can run
+
+    /usr/bin/docker run --rm -i -t wiserzynq-lm /opt/opt/linux_flexlm_v11.11.0_201503/lnx64.o/lmgrd lmstat -c 2100@your-server host
 
 
