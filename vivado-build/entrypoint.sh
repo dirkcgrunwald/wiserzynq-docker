@@ -9,6 +9,8 @@
 # If we are running from boot2docker, this is not necessary.
 
 . /opt/Xilinx/Vivado/2014.4/settings64.sh
+# replace IP with your floating license server IP
+export XILINXD_LICENSE_FILE=2100@IP
 
 if [[ -n $BUILDER_UID ]] && [[ -n $BUILDER_GID ]]; then
 
