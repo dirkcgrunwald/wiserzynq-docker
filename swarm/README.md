@@ -19,3 +19,17 @@ eval $(docker-machine env --swarm swarm-master)
 
 
 
+
+FAQ
+1. swarm master doesn't discover new nodes even if the remote discover server list it.
+	#check if the remote server has the new node config
+	sudo docker run --rm swarm list token://6b9f2a61187cacd90c221305b74fabad
+	#login to the master
+	sudo docker kill swarm-agent-master
+	docker run -t -p 3376:3376 -v /etc/docker:/etc/docker --name="swarm-agent-master" -t swarm manage --tlsverify --tlscacert=/etc/docker/ca.pem --tlscert=/etc/docker/server.pem --tlskey=/etc/docker/server-key.pem -H tcp://0.0.0.0:3376 --strategy spread token://6b9f2a61187cacd90c221305b74fabad
+
+2. sshfs in containers
+	#start containers with the following options
+	--privileged --cap-add SYS_ADMIN --device
+	#run sshfs in the container
+	sshfs username@ip:path localpath

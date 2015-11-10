@@ -13,7 +13,7 @@ id=`cinder list --name ${AGENT_NAME}|awk 'NR==4'|awk '{print $2}'`
 nova volume-attach ${AGENT_NAME} ${id} /dev/vdb
 ip=`nova show ${AGENT_NAME}|grep "public network"|awk '{print $5}'`
 ssh -i /home/work/nigo9731/.docker/machine/machines/${AGENT_NAME}/id_rsa -o StrictHostKeyChecking=no ubuntu@$ip << EOF
-        sudo mkfs.ext4 /dev/vdb
+        sudo mkfs.ext4 -q /dev/vdb
 	sudo mount /dev/vdb /mnt
 	sudo service docker stop
 	sudo cp -R /var/lib/docker /mnt/
