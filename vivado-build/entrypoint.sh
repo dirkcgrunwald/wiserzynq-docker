@@ -9,8 +9,10 @@
 # If we are running from boot2docker, this is not necessary.
 
 . /opt/Xilinx/Vivado/2014.4/settings64.sh
-# replace IP with your floating license server IP
 export XILINXD_LICENSE_FILE=2100@IP
+if [[ -n $MOUNT_PATH ]]; then
+	sshfs -o allow_other -oStrictHostKeyChecking=no -oIdentityFile=/root/.ssh/id_rsa user@IP:$MOUNT_PATH /vivado/build/
+fi
 
 if [[ -n $BUILDER_UID ]] && [[ -n $BUILDER_GID ]]; then
 

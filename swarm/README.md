@@ -28,8 +28,8 @@ FAQ
 	sudo docker kill swarm-agent-master
 	docker run -t -p 3376:3376 -v /etc/docker:/etc/docker --name="swarm-agent-master" -t swarm manage --tlsverify --tlscacert=/etc/docker/ca.pem --tlscert=/etc/docker/server.pem --tlskey=/etc/docker/server-key.pem -H tcp://0.0.0.0:3376 --strategy spread token://6b9f2a61187cacd90c221305b74fabad
 
-2. sshfs in containers
-	#start containers with the following options
-	--privileged --cap-add SYS_ADMIN --device
-	#run sshfs in the container
-	sshfs username@ip:path localpath
+2. sshfs
+	#check vivado-build files for sshfs set up.
+
+3. docker pull hangs
+	#restart docker daemon and swarm manager at manager node.
