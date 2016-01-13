@@ -14,6 +14,7 @@ Finally commit the changes to vivado-base image
 
 Second: create ssh keys for remote sshfs commands and store them in sshkeys directory
 ssh-keygen -t rsa 
+Store the public key at authorized_keys so that the swarm cluster is able to access data via sshfs
 
 Second create vivado-build image
 sudo docker build -t vivado-build .

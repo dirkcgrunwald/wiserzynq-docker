@@ -50,10 +50,15 @@ def get(which_build):
 
 def clean_threads():
 	while True:
+		deleted_threads = []
 		for thread in threads:
 			if thread.isAlive() == False:
 				print "collect one thread"
 				thread.join()
+				deleted_threads.append(thread)
+		# remove the deleted threads from the threadpool
+		for thread in deleted_threads:
+			threads.remove(thread)
 		time.sleep(10)
 
 if __name__ == "__main__":
