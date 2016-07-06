@@ -1,3 +1,5 @@
+.gitignore
 *.bsp
 petalinux*run
 */build
+vivado-build/sshkeys

@@ -8,10 +8,21 @@
 # created are owned by that user. Without this they are all owned by root.
 # If we are running from boot2docker, this is not necessary.
 
-. /opt/Xilinx/Vivado/2014.4/settings64.sh
-export XILINXD_LICENSE_FILE=2100@IP
+. /opt/Xilinx/Vivado/${version}/settings64.sh
+if [[ -n $LICENSE_IP ]];then
+	export XILINXD_LICENSE_FILE=2100@$LICENSE_IP
+fi
 if [[ -n $MOUNT_PATH ]]; then
-	sshfs -o allow_other -oStrictHostKeyChecking=no -oIdentityFile=/root/.ssh/id_rsa user@IP:$MOUNT_PATH /vivado/build/
+	if [[ -n $MOUNT_IP ]]; then
+		if [[ -n $MOUNT_USER ]]; then
+			sshfs -o allow_other -oStrictHostKeyChecking=no -oIdentityFile=/root/.ssh/id_rsa $MOUNT_USER@$MOUNT_IP:$MOUNT_PATH /vivado/build/
+		else
+			echo "MOUNT_USER should be provided"
+			exit
+		fi
+	else
+		echo "MOUNT_IP should be provided"	
+	fi
 fi
 
 if [[ -n $BUILDER_UID ]] && [[ -n $BUILDER_GID ]]; then
