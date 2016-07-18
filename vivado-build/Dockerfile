@@ -1,6 +1,6 @@
-FROM vivado-base${version}:1.0
+FROM vivado-base${vivado-version, e.g. 2014-4}:1.0
 
-RUN apt-get update && apt-get install -y make sshfs python python-numpy; \
+RUN apt-get update && apt-get install -y make sshfs python python-numpy lib32z1 lib32ncurses5 lib32bz2-1.0 lib32stdc++6; \
 	mkdir /vivado; \
 	chmod -R a+rw /vivado;
 
