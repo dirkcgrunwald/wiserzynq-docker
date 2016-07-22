@@ -2,4 +2,8 @@
 *.bsp
 petalinux*run
 */build
-vivado-build/sshkeys
+domain.crt
+domain.key
+registry.conf
+docker-compose.yml
+web.log

@@ -20,10 +20,16 @@ Second: create vivado-build image(change version at entrypoint.sh and Dockerfile
 sudo docker build -t vivado-build .
 
 Third: run the vivado build
-sudo ./run.sh $PATH_TO_VOLUME_MOUNT
+sudo ./run.sh arguments(refer to run.sh for parameters)
 
 
 FAQ
 1. what are some hardcoded path I need to know?
 	/vivado: working directory
 	/vivado/build: mounting volume path
+
+TODO:
+1. for Zync board to build successfully, the following packages needs to be installed.
+	gcc, libssl-dev, bc
+	Zync board build includes linux image, device tree, etc.
+

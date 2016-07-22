@@ -7,8 +7,7 @@ add certification and key files to auth directory, the names of these two files 
 install Flask
 	sudo pip install Flask
 run the system
-	python web.py
-	docker-compose up -d
+	./run.sh
 
 #port graph
                ----------------------------------------

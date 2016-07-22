@@ -1,9 +1,0 @@
-nginx:
-  image: nginx_ldap
-  container_name: nginx
-  net: "host"
-  volumes:
-    - /home/work/nigo9731/dockers/webfront/auth/:/etc/nginx/conf.d
-    - /home/work/nigo9731/dockers/webfront/auth/registry.conf:/etc/nginx/nginx.conf
-  extra_hosts:
-    - "ldap-0.csel.loc:128.138.201.125"
