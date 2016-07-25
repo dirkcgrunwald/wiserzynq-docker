@@ -7,10 +7,13 @@
 # MOUNT_USER: if the directory to be mounted is at a remote machine, this is the username
 MOUNT_IP=$(ifconfig eth0 | sed -rn 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
 MOUNT_USER=$(whoami)
-while getopts ":v:L:p:i:u:h" opt; do
+while getopts ":v:c:L:p:i:u:h" opt; do
 	case $opt in
 	v)
 		VIVADO_VERSION=$OPTARG
+		;;
+	c)
+		CONFIG_UUID=$OPTARG
 		;;
 	L)
  		LICENSE_IP=$OPTARG
@@ -25,7 +28,8 @@ while getopts ":v:L:p:i:u:h" opt; do
 		MOUNT_USER=$OPTARG
 		;;
 	h)
-		echo "options: v----> vivado version, for examplle 2014-4"
+		echo "options: v----> vivado version, for examplle 2014.4"
+		echo "options: c----> config uuid in the redis db"
 		echo "options: L----> license manager ip address"
 		echo "options: p----> mounting path, whether it's local or remote server"
 		echo "options: i----> ip for the server where mounting directory resides, default:" $(ifconfig eth0 | sed -rn 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p') 
@@ -41,4 +45,13 @@ if [[ -z $VIVADO_VERSION ]];then
 	echo "provide vivado version, please"
 	exit
 fi
-sudo docker run --privileged --cap-add SYS_ADMIN --device /dev/fuse -e LICENSE_IP=$LICENSE_IP -e MOUNT_PATH=$MOUNT_PATH -e MOUNT_IP=$MOUNT_IP -e MOUNT_USER=$MOUNT_USER -e BUILDER_UID=$( id -u ) -e BUILDER_GID=$( id -g ) -it --rm docker.csel.io:7777/vivado-build$VIVADO_VERSION:1.0 /bin/bash
+if [[ -z $CONFIG_UUID ]];then
+	echo "provide config uuid, please"
+	exit
+fi
+if [[ -z $LICENSE_IP ]];then
+	echo "provide license manager ip, please"
+	exit
+fi
+
+sudo docker run --privileged --cap-add SYS_ADMIN --device /dev/fuse -e LICENSE_IP=$LICENSE_IP -e MOUNT_PATH=$MOUNT_PATH -e MOUNT_IP=$MOUNT_IP -e MOUNT_USER=$MOUNT_USER -e BUILDER_UID=$( id -u ) -e BUILDER_GID=$( id -g ) --rm docker.csel.io:7777/vivado-build$VIVADO_VERSION:1.0 python /vivado/build/StartBuild.py -v $VIVADO_VERSION -c $CONFIG_UUID

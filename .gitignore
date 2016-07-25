@@ -7,3 +7,5 @@ domain.key
 registry.conf
 docker-compose.yml
 web.log
+vivado-build/sshkeys/*
+*.pyc
