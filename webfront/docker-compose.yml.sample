@@ -3,5 +3,5 @@ nginx:
   container_name: nginx
   net: "host"
   volumes:
-    - ${auth_directory containing domain.crt and domain.key}:/etc/nginx/conf.d
-    - ${registry conf file for ngnix}:/etc/nginx/nginx.conf
+    - ${auth_directory}:/etc/nginx/conf.d
+    - ${registry_conf}:/etc/nginx/nginx.conf

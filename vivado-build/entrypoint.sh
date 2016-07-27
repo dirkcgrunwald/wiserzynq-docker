@@ -8,9 +8,7 @@
 # created are owned by that user. Without this they are all owned by root.
 # If we are running from boot2docker, this is not necessary.
 
-# replace the ${vivado_version} with real version, e.g. 2014.4, 2015.1
-
-. /opt/Xilinx/Vivado/${vivado_version}/settings64.sh
+. /opt/Xilinx/Vivado/${version}/settings64.sh
 ln -s /usr/bin/make /usr/bin/gmake
 if [[ -n $LICENSE_IP ]];then
 	export XILINXD_LICENSE_FILE=2100@$LICENSE_IP

@@ -18,7 +18,7 @@ http {
     # define ldap server
     ldap_server ad_1 {
       # user search base.
-      url "ldaps://${ldap server ip}/dc=${restriction},dc=${restriction}?uid?sub?(&(objectClass=posixAccount)(memberOf=*))";
+      url "ldaps://${ldap_server_ip}/dc=${restriction},dc=${restriction}?uid?sub?(&(objectClass=posixAccount)(memberOf=*))";
       # bind as
       no binddn;
       # bind pw
@@ -34,7 +34,7 @@ http {
     }
    server {
     listen 443 ssl;
-    server_name ${server url};
+    server_name ${server_url};
     # SSL
     ssl_certificate /etc/nginx/conf.d/domain.crt;
     ssl_certificate_key /etc/nginx/conf.d/domain.key;

@@ -1,16 +1,18 @@
 set up swarm cluster for fair scheduling
 follow the instructions here
 
-#create swarm token and record it
-docker run swarm create
+1. create swarm token and record it
+	docker run swarm create
 
-#launch swarm master and agent nodes
-#refer to add_new_agent.sh
-#choose add master or agent; then input name, follow name conventions like swarm-master, swarm-agent-00, swarm-agent-01
+2. launch swarm master and agent nodes
+	download openstack rc file name as spectrum-openrc.sh
+	install docker-machine
+	refer to add_new_agent.sh
+	choose add master or agent; then input name, follow name conventions like swarm-master, swarm-agent-00, swarm-agent-01
 
-#set up environment to talk to docker in master(or append the following command in bashrc for convenience)
-#this is tls protected by default
-eval $(docker-machine env --swarm swarm-master)
+3. set up environment to talk to docker in master(or append the following command in bashrc for convenience)
+	this is tls protected by default
+	eval $(docker-machine env --swarm swarm-master)
 
 
 FAQ

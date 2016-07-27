@@ -18,13 +18,9 @@ Second: create vivado-build image(change version at entrypoint.sh and Dockerfile
 		ssh-keygen
 	3. store the keys as id_rsa, id_rsa.pub in a directory called sshkeys
 		also push the public key to the bitbucket account
-	4. build image
-		cp ../webfront/RedisHelper.py ./
-		sudo docker build -t vivado-build .
 
-Third: push image to docker registry
-	sudo docker tag vivado-build ${docker registry url}/vivado_build${version}:1.0
-
+Third: run setup.sh ${version} ${docker registry url}
+	note: run setup at webfront to initialize redis authorization
 
 FAQ
 1. what are some hardcoded path I need to know?
