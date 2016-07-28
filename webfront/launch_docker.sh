@@ -54,4 +54,4 @@ if [[ -z $LICENSE_IP ]];then
 	exit
 fi
 
-sudo docker run --privileged --cap-add SYS_ADMIN --device /dev/fuse -e LICENSE_IP=$LICENSE_IP -e MOUNT_PATH=$MOUNT_PATH -e MOUNT_IP=$MOUNT_IP -e MOUNT_USER=$MOUNT_USER -e BUILDER_UID=$( id -u ) -e BUILDER_GID=$( id -g ) --rm docker.csel.io:7777/vivado-build$VIVADO_VERSION:1.0 python /vivado/build/StartBuild.py -v $VIVADO_VERSION -c $CONFIG_UUID
+docker run --privileged --cap-add SYS_ADMIN --device /dev/fuse -e LICENSE_IP=$LICENSE_IP -e MOUNT_PATH=$MOUNT_PATH -e MOUNT_IP=$MOUNT_IP -e MOUNT_USER=$MOUNT_USER -e BUILDER_UID=$( id -u ) -e BUILDER_GID=$( id -g ) --rm docker.csel.io:7777/vivado-build$VIVADO_VERSION:1.0 python /vivado/build/StartBuild.py -v $VIVADO_VERSION -c $CONFIG_UUID
