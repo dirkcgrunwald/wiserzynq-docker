@@ -32,11 +32,11 @@ if [[ -n $BUILDER_UID ]] && [[ -n $BUILDER_GID ]]; then
     BUILDER_GROUP=vivado-group
 
     groupadd -o -g $BUILDER_GID $BUILDER_GROUP 2> /dev/null
-    useradd -o -g $BUILDER_GID -u $BUILDER_UID $BUILDER_USER 2> /dev/null
+    useradd -o -g $BUILDER_GID -u $BUILDER_UID -d /home/vivado-user $BUILDER_USER 2> /dev/null
     echo "$BUILDER_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$BUILDER_USER
 
     # Run the command as the specified user/group.
-    exec chpst -u :$BUILDER_UID:$BUILDER_GID "$@"
+    exec chpst -u :$BUILDER_UID:$BUILDER_GID -e /vivado/ENV "$@"
 else
     # Just run the command as root.
     exec "$@"

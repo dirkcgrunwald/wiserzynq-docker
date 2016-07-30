@@ -29,6 +29,8 @@ FAQ
 2. what to replace in the ${} in the scripts
 	${version}: use vivado version e.g. 2014.4, 2015.1
 	${docker registry url}: server name that runs docker registry process
+3. what is the ENV directory
+	It is used in chpst command in the entrypoint.sh to adjust correct HOME environment  
 
 TODO:
 1. for Zync board to build successfully, the following packages needs to be installed.
