@@ -47,9 +47,11 @@ def build():
 				config_json += line
 			RedisHelper.StoreConfig(uuid_rand, config_json)
 			vivado_version = request.form['vivado_version']
+			ipblk = request.form['ipblk']
 			LaunchCmd = "./launch_docker.sh -v \
 				" + vivado_version +" -c " + uuid_rand +" -L work.cs.colorado.edu"
-
+			if ipblk != '':
+				LaunchCmd += " -l " + ipblk
 			thread = threading.Thread(target = RunBash, args = (LaunchCmd,))
 			thread.start()
 			threads.append(thread)
@@ -68,6 +70,8 @@ def build():
 			</select><br>
 		config file: 
 			<input type=file name=File><br>
+		IP Block Repository(default: git@bitbucket.org:cusdr/cunoc_ip_lib.git):
+			<input type="text" name=ipblk><br>
 		<input type=submit value=Submit>
 		</form>
 		"""
