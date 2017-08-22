@@ -1,0 +1,3 @@
+vivado-build/sshkeys/
+webfront/auth/domain.crt
+webfront/auth/domain.key
